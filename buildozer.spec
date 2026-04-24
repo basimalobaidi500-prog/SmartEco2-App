@@ -1,5 +1,6 @@
 [app]
-
+android.sdk_path = /home/runner/.buildozer/android/platform/android-sdk
+android.ndk_path = /home/runner/.buildozer/android/platform/android-ndk
 title = EcoTrack AI
 package.name = ecotrack
 package.domain = org.eco
