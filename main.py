@@ -1,63 +1,105 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
-import requests
+from kivymd.uix.screen import MDScreen
 
 KV = '''
-Screen:
+MDScreen:
+
+    md_bg_color: 0.07, 0.12, 0.2, 1  # Dark blue
+
     MDBoxLayout:
         orientation: "vertical"
         padding: 20
         spacing: 20
 
         MDLabel:
-            text: "🌱 EcoTrack AI"
-            halign: "center"
-            font_style: "H4"
+            text: "Hi, User 👋"
+            font_style: "H5"
+            theme_text_color: "Custom"
+            text_color: 1,1,1,1
 
-        MDTextField:
-            id: electricity
-            hint_text: "Electricity (kWh)"
-            input_filter: "float"
+        # ===== Cards =====
 
-        MDTextField:
-            id: water
-            hint_text: "Water (liters)"
-            input_filter: "float"
+        MDGridLayout:
+            cols: 1
+            spacing: 15
 
-        MDTextField:
-            id: fuel
-            hint_text: "Fuel (liters)"
-            input_filter: "float"
+            MDCard:
+                radius: [20]
+                elevation: 8
+                md_bg_color: 0.1,0.2,0.35,1
+                padding: 15
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MDLabel:
+                        text: "⚡ Energy"
+                        theme_text_color: "Custom"
+                        text_color: 1,1,1,1
+
+                    MDProgressBar:
+                        value: 67
+
+                    MDLabel:
+                        text: "560 kWh"
+                        halign: "right"
+                        theme_text_color: "Custom"
+                        text_color: 0.6,1,0.8,1
+
+            MDCard:
+                radius: [20]
+                elevation: 8
+                md_bg_color: 0.1,0.2,0.35,1
+                padding: 15
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MDLabel:
+                        text: "💧 Water"
+                        theme_text_color: "Custom"
+                        text_color: 1,1,1,1
+
+                    MDProgressBar:
+                        value: 38
+
+                    MDLabel:
+                        text: "119 gal"
+                        halign: "right"
+                        text_color: 0.6,1,0.8,1
+
+            MDCard:
+                radius: [20]
+                elevation: 8
+                md_bg_color: 0.1,0.2,0.35,1
+                padding: 15
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MDLabel:
+                        text: "⛽ Fuel"
+                        text_color: 1,1,1,1
+
+                    MDProgressBar:
+                        value: 50
+
+                    MDLabel:
+                        text: "178 L"
+                        halign: "right"
+                        text_color: 0.6,1,0.8,1
 
         MDRaisedButton:
             text: "Analyze"
-            on_release: app.send_data()
-
-        MDLabel:
-            id: result
-            text: ""
-            halign: "center"
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: 0.2,0.8,0.6,1
 '''
 
-# ⚠️ مهم: مؤقتاً بدون API (محلي)
 class EcoApp(MDApp):
     def build(self):
+        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_palette = "Teal"
         return Builder.load_string(KV)
-
-    def send_data(self):
-        elec = float(self.root.ids.electricity.text or 0)
-        water = float(self.root.ids.water.text or 0)
-        fuel = float(self.root.ids.fuel.text or 0)
-
-        carbon = (elec * 0.5) + (water * 0.001) + (fuel * 2.3)
-
-        if fuel > 5:
-            advice = "🚗 قلل استخدام السيارة"
-        elif elec > 50:
-            advice = "💡 استخدم أجهزة موفرة للطاقة"
-        else:
-            advice = "🌿 عمل رائع!"
-
-        self.root.ids.result.text = f"CO2: {carbon:.2f}\n{advice}"
 
 EcoApp().run()
